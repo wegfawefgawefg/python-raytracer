@@ -49,10 +49,9 @@ class Vec3:
             self.x / other)
 
     def dot(self, vec2):
-        return math.sqrt(
-            self.x * vec2.x + 
-            self.y * vec2.y + 
-            self.z * vec2.z)
+        return self.x * vec2.x + \
+               self.y * vec2.y + \
+               self.z * vec2.z
 
     def __repr__(self):
         return (self.x, self.y, self.z).__repr__()
