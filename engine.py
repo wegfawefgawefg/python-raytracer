@@ -4,8 +4,10 @@ from vector import Vec3
 from image import Image
 from tqdm import tqdm
 
+MIN_OFFSET = 0.001
+
 class RenderEngine:
-    def render(self, scene):
+    def render(self, scene, max_bounces=3):
         width = scene.width
         height = scene.height
         cam = scene.cam
@@ -34,18 +36,32 @@ class RenderEngine:
                     origin=cam, 
                     direction=plane_target-cam)
 
-                img.pixels[row][col] = self.raytrace(ray, scene)
+                img.pixels[row][col] = self.raytrace(ray, scene, max_bounces)
 
         return img
 
-    def raytrace(self, ray, scene):
+    def raytrace(self, ray, scene, max_bounces):
         color = Color()
+        color += self.raytrace_inner(ray, scene, 0, max_bounces)
+        return color
+
+    def raytrace_inner(self, ray, scene, depth, max_depth):
+        if depth == max_depth:
+            return Color()
+
         dist, obj_hit = self.nearest_intersection(ray, scene)
         if obj_hit is None:
-            return color
+            return Color()
         hit_pos = ray.origin + ray.dir * dist
         hit_normal = obj_hit.normal(hit_pos)
-        color += self.color_at(obj_hit, hit_pos, hit_normal, scene)
+        color = self.color_at(obj_hit, hit_pos, hit_normal, scene)
+
+        new_ray = Ray(
+            origin=hit_pos + hit_normal * MIN_OFFSET,
+            direction=ray.dir - (2 * ray.dir.dot(hit_normal)) * hit_normal)
+
+        color += self.raytrace_inner(new_ray, scene, depth + 1, max_depth) \
+            * obj_hit.material.reflection
         return color
 
     def nearest_intersection(self, ray, scene):
