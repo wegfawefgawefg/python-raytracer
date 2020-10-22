@@ -1,4 +1,4 @@
 class Ray:
-    def __init__(self, origin, direction):
+    def __init__(self, origin, dir):
         self.origin = origin
-        self.dir = direction.norm()
+        self.dir = dir.norm()

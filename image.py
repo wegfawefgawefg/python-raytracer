@@ -1,4 +1,5 @@
 from color import Color
+from PIL import Image as PImage
 
 class Image:
     def __init__(self, width=320, height=200):
@@ -22,6 +23,28 @@ class Image:
                         pixel.x, pixel.y, pixel.z))
                 img.write("\n")
             img.close()
+
+    def to_pimage(self):
+        file_image = PImage.new('RGB', (self.width, self.height), color = 'black')
+        pixels = file_image.load()
+        for y in range(self.height):
+            for x in range(self.width):
+                pixels[x, y] = (
+                    int(min(self.pixels[y][x].x, 255)), 
+                    int(min(self.pixels[y][x].y, 255)), 
+                    int(min(self.pixels[y][x].z, 255)))
+
+        return file_image
+
+    def write_as_png(self, file_name, show_when_done=False):
+        file_image = self.to_pimage()
+        file_image.save(file_name + ".png")
+        if show_when_done:
+            file_image.show()
+
+    def show(self):
+        file_image = self.to_pimage()
+        file_image.show()
 
 if __name__ == "__main__":
     img = Image()
