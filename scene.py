@@ -22,7 +22,7 @@ class Scene:
         self.moon_and_friends_with_sky()
 
     def moon_and_friends_with_sky(self):
-        moon_texture = ColorTexture("textures\lroc_color_poles_2k.tif")
+        # moon_texture = ColorTexture("textures\lroc_color_poles_2k.tif")
         # moon_texture = ColorTexture("textures\lroc_color_poles_4k.tif")
         # kirby_texture = ColorTexture("textures\kirbigger2.png")
         # sphere_texture = moon_texture
@@ -39,8 +39,9 @@ class Scene:
                 material=DiffuseMaterial(
                     color=Color().randomize(),
                     ambient=0.3,
-                    diffuse=0.1 + 0.3 * (i+1),
-                    specular=0.1 + 0.3 * (i+1))
+                    diffuse=0.1,
+                    specular=0.1,
+                    reflection=0.8)
                 # material=TexturedMaterial(
                 #     color_texture=moon_texture,
                 #     ambient=0.3,
@@ -50,21 +51,21 @@ class Scene:
             )
             objects.append(new_obj)
 
-        center_sphere = Sphere(
-            center=Vec3(
-                x=0, 
-                y=-0.1,
-                z=-1.0),
-            radius=0.4,
-            material=IdealMaterial(
-                color=Color().randomize(),
-                ambient=0.1,
-                diffuse=0.5,
-                specular=0.1,
-                reflection=0.5
-            )
-        )
-        objects.append(center_sphere)
+        # center_sphere = Sphere(
+        #     center=Vec3(
+        #         x=0, 
+        #         y=-0.1,
+        #         z=-1.0),
+        #     radius=0.4,
+        #     material=IdealMaterial(
+        #         color=Color().randomize(),
+        #         ambient=0.1,
+        #         diffuse=0.5,
+        #         specular=0.1,
+        #         reflection=0.8
+        #     )
+        # )
+        # objects.append(center_sphere)
 
         # ground_sphere = Sphere(
         #     center=Vec3(
@@ -82,21 +83,21 @@ class Scene:
         # )
         # objects.append(ground_sphere)
 
-        moon_sphere = Sphere(
-            center=Vec3(
-                x=0, 
-                y=0.5,
-                z=-1.0),
-            radius=0.4,
-            material=TexturedMaterial(
-                color_texture=moon_texture,
-                ambient=0.5,
-                diffuse=1.0,
-                specular=0.1, 
-                reflection=0.2,),
-            orientation=Vec3(0.43, -0.1, 0.0)
-        )
-        objects.append(moon_sphere)
+        # moon_sphere = Sphere(
+        #     center=Vec3(
+        #         x=0, 
+        #         y=0.5,
+        #         z=-1.0),
+        #     radius=0.4,
+        #     material=TexturedMaterial(
+        #         color_texture=moon_texture,
+        #         ambient=0.01,
+        #         diffuse=0.3,
+        #         specular=0.1, 
+        #         reflection=0.8,),
+        #     orientation=Vec3(0.43, -0.1, 0.0)
+        # )
+        # objects.append(moon_sphere)
 
         ground_sphere = Sphere(
             center=Vec3(
@@ -105,10 +106,10 @@ class Scene:
                 z=0.0),
             radius=100.0,
             material=CheckMaterial(
-                ambient=0.3,
+                ambient=1.0,
                 diffuse=1.0,
                 specular=0.0, 
-                reflection=0.1
+                reflection=0.8
             )
         )
         objects.append(ground_sphere)

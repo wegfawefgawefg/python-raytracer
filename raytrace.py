@@ -8,9 +8,9 @@ from ray import Ray
 
 def main():
     # WIDTH, HEIGHT = 200, 200
-    WIDTH, HEIGHT = 300, 200
+    # WIDTH, HEIGHT = 300, 200
     # WIDTH, HEIGHT = 500, 500
-    # WIDTH, HEIGHT = 1920, 1080
+    WIDTH, HEIGHT = 1920, 1080
     # WIDTH, HEIGHT = 4096, 2160
     # WIDTH, HEIGHT = 7680, 4320
     

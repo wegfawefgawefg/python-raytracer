@@ -11,8 +11,8 @@ SPECULAR_K = 80
 def render(scene, 
         max_bounces=3, 
         antialiasing=False,
-        samples=30,
-        max_sample_displacement=0.001):
+        samples=10,
+        max_sample_displacement=0.002):
     width = scene.width
     height = scene.height
     cam = scene.cam
@@ -24,24 +24,20 @@ def render(scene,
         for col in range(width):
             tracking = False
             x_fraq = col / (width - 1)
-            plane_target = tl + y_fraq * down + x_fraq * right
-            if antialiasing:
-                color = Vec3()
-                for _ in range(samples):
-                    noisy_plane_target = plane_target + Vec3.random(
-                        max_val=max_sample_displacement)
-                    ray = Ray(
-                        origin=cam.origin, 
-                        dir=noisy_plane_target-cam.origin)
-                    color += raytrace(ray, scene, samples, max_bounces, tracking)
-                color = color / samples
-                img.pixels[row][col] = color
-            else:
+            base_plane_target = tl + y_fraq * down + x_fraq * right
+
+            color = Vec3()
+            for _ in range(samples):
+                if antialiasing:
+                    plane_target = base_plane_target + Vec3.random(max_val=max_sample_displacement)
+                else:
+                    plane_target = base_plane_target
                 ray = Ray(
                     origin=cam.origin, 
                     dir=plane_target-cam.origin)
-                img.pixels[row][col] = raytrace(ray, scene, samples, max_bounces, tracking)
-
+                color += raytrace(ray, scene, samples, max_bounces, tracking)
+            color = color / samples
+            img.pixels[row][col] = color
     render_lines(img, scene, tl, right, down)
     return img
 
@@ -74,9 +70,9 @@ def raytrace_inner(ray, scene, samples, depth, max_depth, tracking):
 
     ''' MISS    '''
     if obj_hit is None:
-        t = 0.5*(ray.dir.y + 1.0)
-        return ((1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0)) * 255
-        # return Color()
+        # t = 0.5*(ray.dir.y + 1.0)
+        # return ((1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0))
+        return Color()
     
     ''' HIT     ''' 
     hit_pos = ray.origin + ray.dir * dist
@@ -88,10 +84,8 @@ def raytrace_inner(ray, scene, samples, depth, max_depth, tracking):
     color = color_at(obj_hit, hit_pos, hit_normal, scene)
     new_ray = obj_hit.material.bounce(ray, hit_pos, hit_normal)
 
-    for _ in range(samples):
-        color += raytrace_inner(new_ray, scene, samples, depth + 1, max_depth, tracking) \
-            * obj_hit.material.reflection
-    color = color / samples
+    color += raytrace_inner(new_ray, scene, samples, depth + 1, max_depth, tracking) \
+        * obj_hit.material.reflection
     return color
 
 def nearest_intersection(ray, scene):

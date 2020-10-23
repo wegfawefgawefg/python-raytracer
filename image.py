@@ -1,5 +1,6 @@
 from color import Color
 from PIL import Image as PImage
+import math
 
 class Image:
     def __init__(self, width=320, height=200):
@@ -30,9 +31,9 @@ class Image:
         for y in range(self.height):
             for x in range(self.width):
                 pixels[x, y] = (
-                    int(min(self.pixels[y][x].x, 255)), 
-                    int(min(self.pixels[y][x].y, 255)), 
-                    int(min(self.pixels[y][x].z, 255)))
+                    int(min(math.sqrt(self.pixels[y][x].x) * 255, 255)), 
+                    int(min(math.sqrt(self.pixels[y][x].y) * 255, 255)), 
+                    int(min(math.sqrt(self.pixels[y][x].z) * 255, 255)))
 
         return file_image
 
