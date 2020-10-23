@@ -126,6 +126,14 @@ class Vec3:
         r = math.sqrt(1 - z*z)
         return Vec3(r * math.cos(a), r * math.sin(a), z)
 
+    @classmethod
+    def random_in_hemisphere(self, normal):
+        in_unit_sphere = Vec3.random_in_unit_sphere()
+        if in_unit_sphere.dot(normal) > 0:
+            return in_unit_sphere
+        else:
+            return -in_unit_sphere
+
     def __repr__(self):
         return f"({self.x:5.3}, {self.y:5.3}, {self.z:5.3})"
 

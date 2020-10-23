@@ -1,7 +1,10 @@
 from color import Color
 from vector import Vec3
+from ray import Ray
 
-class Material:
+MIN_OFFSET = 0.001
+
+class IdealMaterial:
     def __init__(self, 
             color=Color().white(),
             ambient=1.0,
@@ -16,6 +19,35 @@ class Material:
 
     def color_at(self, u, v, pos):
         return self.color
+
+    def bounce(self, ray, hit_pos, hit_normal):
+        '''perfect mirror reflection'''
+        return Ray(
+            origin=hit_pos + hit_normal * MIN_OFFSET,
+            dir=ray.dir - (2 * ray.dir.dot(hit_normal)) * hit_normal)
+
+class DiffuseMaterial:
+    def __init__(self, 
+            color=Color().white(),
+            ambient=1.0,
+            diffuse=1.0, 
+            specular=1.0,
+            reflection=0.5):
+        self.color = color
+        self.ambient = ambient
+        self.diffuse = diffuse
+        self.specular = specular
+        self.reflection = reflection
+
+    def color_at(self, u, v, pos):
+        return self.color
+
+    def bounce(self, ray, hit_pos, hit_normal):
+        '''lambertian diffuse reflection'''
+        return Ray(
+            origin=hit_pos + hit_normal * MIN_OFFSET,
+            dir=hit_normal + Vec3.random_unit_vector()
+        )
 
 class CheckMaterial:
     def __init__(self, 
@@ -37,6 +69,12 @@ class CheckMaterial:
             return self.color_one
         return self.color_two
 
+    def bounce(self, ray, hit_pos, hit_normal):
+        '''perfect mirror reflection'''
+        return Ray(
+            origin=hit_pos + hit_normal * MIN_OFFSET,
+            dir=ray.dir - (2 * ray.dir.dot(hit_normal)) * hit_normal)
+
 class TexturedMaterial:
     def __init__(self, 
             color_texture,
@@ -52,3 +90,9 @@ class TexturedMaterial:
 
     def color_at(self, u, v, pos):
         return self.color_texture.color_at(u, v)
+
+    def bounce(self, ray, hit_pos, hit_normal):
+        '''perfect mirror reflection'''
+        return Ray(
+            origin=hit_pos + hit_normal * MIN_OFFSET,
+            dir=ray.dir - (2 * ray.dir.dot(hit_normal)) * hit_normal)

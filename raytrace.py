@@ -1,11 +1,8 @@
 from color import Color
 from image import Image
 from vector import Vec3
-from sphere import Sphere
 import engine as Engine
 from scene import Scene
-from light import Light
-from material import Material, CheckMaterial, TexturedMaterial
 from texture import ColorTexture
 from ray import Ray
 
