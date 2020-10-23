@@ -61,7 +61,7 @@ class Scene:
                 ambient=0.0,
                 diffuse=0.5,
                 specular=0.1,
-                reflection=0.1
+                reflection=0.5
             )
         )
         objects.append(center_sphere)
@@ -77,7 +77,7 @@ class Scene:
                 ambient=0.0,
                 diffuse=0.5,
                 specular=0.0, 
-                reflection=0.1
+                reflection=0.5
             )
         )
         objects.append(ground_sphere)
@@ -148,21 +148,36 @@ class Scene:
         lights.append(new_light)
 
         lines = []
-        lines.append(
-            Line(
-                start=Vec3(0.0, 0.0, 0.0),
-                end=Vec3(1.0, 0.0, 0.0))
-        )
-        lines.append(
-            Line(
-                start=Vec3(0.0, 0.0, 0.0),
-                end=Vec3(0.0, 1.0, 0.0))
-        )
-        lines.append(
-            Line(
-                start=Vec3(0.0, 0.0, 0.0),
-                end=Vec3(0.0, 0.0, 1.0))
-        )
+        # lines.append(
+        #     Line(
+        #         start=Vec3(0.0, 0.0, 0.0),
+        #         end=Vec3(1.0, 0.0, 0.0))
+        # )
+        # lines.append(
+        #     Line(
+        #         start=Vec3(0.0, 0.0, 0.0),
+        #         end=Vec3(0.0, 1.0, 0.0))
+        # )
+        # lines.append(
+        #     Line(
+        #         start=Vec3(0.0, 0.0, 0.0),
+        #         end=Vec3(0.0, 0.0, 1.0))
+        # )
+        # for y in range(10):
+        #     for x in range(10):
+        #         lines.append(
+        #             Line(
+        #                 start=Vec3(
+        #                     x=0.0, 
+        #                     y=0.0, 
+        #                     z=-2),
+        #                 end=Vec3(
+        #                     x=-0.5 + 0.1*x, 
+        #                     y=-0.5 + 0.1*y, 
+        #                     z=-2))
+        #         )
+
+
 
         self.objects = objects
         self.lights = lights

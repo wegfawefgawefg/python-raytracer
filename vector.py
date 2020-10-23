@@ -11,7 +11,7 @@ class Vec3:
         return math.sqrt(
             self.x**2 +
             self.y**2 + 
-            self.z**2)
+            self.z**2) 
 
     def norm(self):
         mag = self.mag()
