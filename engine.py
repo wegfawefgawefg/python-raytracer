@@ -1,17 +1,24 @@
-from color import Color
-from ray import Ray
-from vector import Vec3
-from image import Image
+from .color import Color
+from .ray import Ray
+from .vector import Vec3
+from .image import Image
+from .line import *
+
 from tqdm import tqdm
 import math
-from line import *
 
 SPECULAR_K = 80
+LIGHTING_HACKS = False
+LAMBERT = True
+BLINN_PHONG = True
+
+SKY_LIGHT = Color(137, 207, 240) / 255
+SKY_LIGHT = Color.white()
 
 def render(scene, 
         max_bounces=3, 
         antialiasing=False,
-        samples=10,
+        samples=1,
         max_sample_displacement=0.002):
     width = scene.width
     height = scene.height
@@ -72,7 +79,8 @@ def raytrace_inner(ray, scene, samples, depth, max_depth, tracking):
     if obj_hit is None:
         # t = 0.5*(ray.dir.y + 1.0)
         # return ((1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0))
-        return Color()
+        # return Color()
+        return SKY_LIGHT
     
     ''' HIT     ''' 
     hit_pos = ray.origin + ray.dir * dist
@@ -106,27 +114,31 @@ def color_at(obj_hit, hit_pos, hit_normal, scene):
         * obj_hit.material.ambient
 
     to_cam = scene.cam.origin - hit_pos
+    if not LIGHTING_HACKS:
+        return obj_color
+    else:   #   LIGHTING_HACKS
+        ''' ADDITIONAL LIGHT MODELS'''
+        color = Color()
+        for light in scene.lights:
+            to_light = Ray(hit_pos, light.pos - hit_pos)
+            half_vector = (to_light.dir + to_cam).norm()
 
-    ''' ADDITIONAL LIGHT MODELS'''
-    color = Color()
-    for light in scene.lights:
-        to_light = Ray(hit_pos, light.pos - hit_pos)
-        half_vector = (to_light.dir + to_cam).norm()
+            if LAMBERT:
+                ''' Diffuse shading (Lambert) '''
+                color += (
+                    obj_color
+                    * obj_hit.material.diffuse
+                    * max(hit_normal.dot(to_light.dir), 0)
+                )
 
-        ''' Diffuse shading (Lambert) '''
-        color += (
-            obj_color
-            * obj_hit.material.diffuse
-            * max(hit_normal.dot(to_light.dir), 0)
-        )
+            if BLINN_PHONG:
+                '''Specular shading (Blinn-Phong)'''
+                color += (
+                    light.color
+                    * obj_hit.material.specular
+                    * max(hit_normal.dot(half_vector), 0) ** SPECULAR_K
+                )
 
-        '''Specular shading (Blinn-Phong)'''
-        color += (
-            light.color
-            * obj_hit.material.specular
-            * max(hit_normal.dot(half_vector), 0) ** SPECULAR_K
-        )
-
-        '''normal visualization'''
-        # color += (hit_normal + Vec3(1, 1, 1)) * 0.5 * 255
-    return color
+            '''normal visualization'''
+            # color += (hit_normal + Vec3(1, 1, 1)) * 0.5 * 255
+        return color

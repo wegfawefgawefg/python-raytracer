@@ -1,5 +1,6 @@
+from .vector import Vec3
+
 import math
-from vector import Vec3
 
 class Sphere:
     def __init__(self, center, radius, material, 

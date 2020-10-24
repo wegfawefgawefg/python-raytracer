@@ -1,6 +1,9 @@
-from color import Color
+from .color import Color
+
 from PIL import Image as PImage
 import math
+
+GAMMA_CORRECTION = True
 
 class Image:
     def __init__(self, width=320, height=200):
@@ -30,10 +33,12 @@ class Image:
         pixels = file_image.load()
         for y in range(self.height):
             for x in range(self.width):
-                pixels[x, y] = (
-                    int(min(math.sqrt(self.pixels[y][x].x) * 255, 255)), 
-                    int(min(math.sqrt(self.pixels[y][x].y) * 255, 255)), 
-                    int(min(math.sqrt(self.pixels[y][x].z) * 255, 255)))
+                if GAMMA_CORRECTION:
+                    pixel = self.pixels[y][x].sqrt()
+                else:
+                    pixel = self.pixels[y][x]
+                pixel = pixel.clamp(0.0, 1.0) * 255.0
+                pixels[x, y] = pixel.as_int_tuple()
 
         return file_image
 

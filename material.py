@@ -1,6 +1,6 @@
-from color import Color
-from vector import Vec3
-from ray import Ray
+from .color import Color
+from .vector import Vec3
+from .ray import Ray
 
 MIN_OFFSET = 0.001
 
@@ -25,6 +25,32 @@ class IdealMaterial:
         return Ray(
             origin=hit_pos + hit_normal * MIN_OFFSET,
             dir=ray.dir - (2 * ray.dir.dot(hit_normal)) * hit_normal)
+
+class MetalMaterial:
+    def __init__(self, 
+            color=Color().white(),
+            ambient=1.0,
+            diffuse=1.0, 
+            specular=1.0,
+            reflection=0.5,
+            fuzz_radius=0.1):
+        self.color = color
+        self.ambient = ambient
+        self.diffuse = diffuse
+        self.specular = specular
+        self.reflection = reflection
+        self.fuzz_radius = fuzz_radius
+
+    def color_at(self, u, v, pos):
+        return self.color
+
+    def bounce(self, ray, hit_pos, hit_normal):
+        '''perfect mirror reflection with noise'''
+        bounce_dir = ray.dir - (2 * ray.dir.dot(hit_normal)) * hit_normal
+        bounce_dir = bounce_dir + Vec3.random_in_unit_sphere() * self.fuzz_radius
+        return Ray(
+            origin=hit_pos + hit_normal * MIN_OFFSET,
+            dir=bounce_dir)
 
 class DiffuseMaterial:
     def __init__(self, 

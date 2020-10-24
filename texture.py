@@ -1,5 +1,6 @@
+from .color import Color
+
 from PIL import Image
-from color import Color
 
 class ColorTexture:
     def __init__(self, texture_file):

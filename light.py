@@ -1,4 +1,4 @@
-from color import Color
+from .color import Color
 
 class Light:
     def __init__(self, pos, color=Color().white()):

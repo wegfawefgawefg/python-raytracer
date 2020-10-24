@@ -1,45 +1,33 @@
-import random
-from vector import Vec3
+import random as rand
+from .vector import Vec3
 
 class Color(Vec3):
     def __init__(self, r=0, g=0, b=0):
         super().__init__(r, g, b)
 
-    def randomize(self):
-        self.x = random.randint(0, 1)
-        self.y = random.randint(0, 1)
-        self.z = random.randint(0, 1)
-        return self
+    @classmethod
+    def random(self):
+        return Color(rand.random(),rand.random(),rand.random())
 
+    @classmethod
     def white(self):
-        self.x = 1
-        self.y = 1
-        self.z = 1
-        return self
+        return Color(1, 1, 1)
 
+    @classmethod
     def black(self):
-        self.x = 0
-        self.y = 0
-        self.z = 0
-        return self
+        return Color()
 
+    @classmethod
     def red(self):
-        self.x = 1
-        self.y = 0
-        self.z = 0
-        return self
+        return Color(1, 0, 0)
 
+    @classmethod
     def green(self):
-        self.x = 0
-        self.y = 1
-        self.z = 0
-        return self
+        return Color(0, 1, 0)
 
+    @classmethod
     def blue(self):
-        self.x = 0
-        self.y = 0
-        self.z = 1
-        return self
+        return Color(0, 0, 1)
 
     def __repr__(self):
         return (self.x, self.y, self.z).__repr__()

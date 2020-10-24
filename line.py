@@ -1,4 +1,4 @@
-from vector import Vec3
+from .vector import Vec3
 
 class Line:
     def __init__(self, start, end):

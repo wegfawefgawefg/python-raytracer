@@ -1,11 +1,11 @@
-from vector import Vec3
-from sphere import Sphere
-from light import Light
-from material import *
-from texture import ColorTexture
-from ray import Ray
-from color import Color
-from line import Line
+from .texture import ColorTexture
+from .sphere import Sphere
+from .color import Color
+from .light import Light
+from .vector import Vec3
+from .material import *
+from .line import Line
+from .ray import Ray
 
 class Scene:
     def __init__(self, width, height, cam, objects=[], lights=[], lines=[]):
@@ -28,8 +28,9 @@ class Scene:
         # sphere_texture = moon_texture
 
         objects = []
-        NUM_SPHERES = 3
-        for i in range(1, NUM_SPHERES):
+        NUM_SPHERES = 1
+        for idx in range(0, NUM_SPHERES):
+            i = idx + 1
             new_obj = Sphere(
                 center=Vec3(
                     x=-0.5 - 1 + i, 
@@ -37,8 +38,8 @@ class Scene:
                     z=-1.0),
                 radius=0.1 * (i + 1),
                 material=DiffuseMaterial(
-                    color=Color().randomize(),
-                    ambient=0.3,
+                    color=Color.random(),
+                    ambient=0.0,
                     diffuse=0.1,
                     specular=0.1,
                     reflection=0.8)
@@ -51,21 +52,21 @@ class Scene:
             )
             objects.append(new_obj)
 
-        # center_sphere = Sphere(
-        #     center=Vec3(
-        #         x=0, 
-        #         y=-0.1,
-        #         z=-1.0),
-        #     radius=0.4,
-        #     material=IdealMaterial(
-        #         color=Color().randomize(),
-        #         ambient=0.1,
-        #         diffuse=0.5,
-        #         specular=0.1,
-        #         reflection=0.8
-        #     )
-        # )
-        # objects.append(center_sphere)
+        center_sphere = Sphere(
+            center=Vec3(
+                x=0, 
+                y=-0.1,
+                z=-1.0),
+            radius=0.3,
+            material=IdealMaterial(
+                color=Color.random(),
+                ambient=0.1,
+                diffuse=0.5,
+                specular=0.1,
+                reflection=0.8
+            )
+        )
+        objects.append(center_sphere)
 
         # ground_sphere = Sphere(
         #     center=Vec3(
@@ -74,7 +75,7 @@ class Scene:
         #         z=0.0),
         #     radius=100.0,
         #     material=IdealMaterial(
-        #         color=Color().randomize(),
+        #         color=Color.random(),
         #         ambient=0.5,
         #         diffuse=0.5,
         #         specular=0.0, 
@@ -106,7 +107,7 @@ class Scene:
                 z=0.0),
             radius=100.0,
             material=CheckMaterial(
-                ambient=1.0,
+                ambient=0.0,
                 diffuse=1.0,
                 specular=0.0, 
                 reflection=0.8

@@ -1,10 +1,10 @@
-from color import Color
-from image import Image
-from vector import Vec3
-import engine as Engine
-from scene import Scene
-from texture import ColorTexture
-from ray import Ray
+from .color import Color
+from .image import Image
+from .vector import Vec3
+from .scene import Scene
+from .ray import Ray
+from .engine import render
+from .texture import ColorTexture
 
 def main():
     # WIDTH, HEIGHT = 200, 200
@@ -21,7 +21,7 @@ def main():
     # cam = Vec3(0, 0, -4)
 
     scene = Scene(WIDTH, HEIGHT, cam)
-    img = Engine.render(scene)
+    img = render(scene)
     img.write_as_png("render", show_when_done=True)
     # img.show()
 

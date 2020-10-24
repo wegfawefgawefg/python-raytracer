@@ -53,6 +53,24 @@ class Vec3:
     def __neg__(self):
         return self.clone() * -1
 
+    def sqrt(self):
+        return Vec3(
+            math.sqrt(self.x),
+            math.sqrt(self.y),
+            math.sqrt(self.z))
+
+    def clamp(self, low, high):
+        return Vec3(
+            min(max(self.x, low), high),
+            min(max(self.y, low), high),
+            min(max(self.z, low), high))
+
+    def as_tuple(self):
+        return (self.x, self.y, self.z)
+
+    def as_int_tuple(self):
+        return (int(self.x), int(self.y), int(self.z))
+
     def dot(self, vec2):
         return self.x * vec2.x + \
                self.y * vec2.y + \
