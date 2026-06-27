@@ -1,0 +1,2 @@
+"""Low-resolution Python raymarcher."""
+
