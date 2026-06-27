@@ -4,6 +4,8 @@ Python port of `~/Coding/Graphics/ruby-raytracer`, using `uv`, CPython 3.13, obj
 
 The scene mirrors the Ruby/Dudu version: orbit camera, centered reflective wobbly sphere, small colored spheres, checkered floor, sky reflection, basic lighting, and soft shadow.
 
+![Python raytracer screenshot](docs/screenshot.png)
+
 ## Run
 
 ```bash

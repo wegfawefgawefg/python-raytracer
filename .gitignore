@@ -4,4 +4,6 @@ __pycache__/
 *.pyc
 *.ppm
 *.png
+!docs/
+!docs/screenshot.png
 *.egg-info/
